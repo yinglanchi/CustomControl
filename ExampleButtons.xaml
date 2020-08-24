@@ -1,0 +1,54 @@
+﻿<UserControl x:Class="ACM.Presentation.Views.Examples.ExampleButtons"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:acm_btns="clr-namespace:ACM.Presentation.Controls.Buttons"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+
+        <PathGeometry x:Key="geometryRemove" Figures="M512 800a288 288 0 0 1 288-288c33.728 0 65.952 6.08 96 16.736V320L576 0H64a64 64 0 0 0-64 64v896a64 64 0 0 0 64 64h555.168A287.296 287.296 0 0 1 512 800z M576 0v256a64 64 0 0 0 64 64h256L576 0z M640 320l194.368 194.368a290.048 290.048 0 0 1 61.632 14.368V320h-256z M160 256h256a32 32 0 1 0 0-64H160a32 32 0 1 0 0 64zM160 384h256a32 32 0 1 0 0-64H160a32 32 0 1 0 0 64zM160 512h576a32 32 0 1 0 0-64H160a32 32 0 1 0 0 64zM619.168 576H160a32 32 0 1 0 0 64h400.576a288 288 0 0 1 58.592-64zM528.736 704H160a32 32 0 1 0 0 64h353.888a285.856 285.856 0 0 1 14.848-64zM513.888 832H160a32 32 0 1 0 0 64h368.736a285.856 285.856 0 0 1-14.848-64z M800 576c-123.68 0-224 100.32-224 224s100.32 224 224 224 224-100.32 224-224-100.32-224-224-224z M928 799.968a32 32 0 0 1-32 32h-192a32 32 0 1 1 0-64h192a32 32 0 0 1 32 32z"/>
+
+    </UserControl.Resources>
+    <StackPanel>
+        <GroupBox Height="auto" Header="Normal">
+            <WrapPanel>
+                <acm_btns:ACMButton Radius="60" FormType="Circle" ButtonType="SimpleMode" 
+                                    Style="{StaticResource ACMButton.Style.Circle.Normal}" Margin="10"/>
+
+                <acm_btns:ACMButton Radius="60" FormType="Circle" ButtonType="ContentMode" Content="ACM" 
+                                    Style="{StaticResource ACMButton.Style.Circle.Normal}" Margin="10"/>
+
+                <acm_btns:ACMButton Width="120" Height="50" FormType="Square" ButtonType="SimpleMode"
+                                    Style="{StaticResource ACMButton.Style.Square.Normal}" Margin="10"/>
+
+                <acm_btns:ACMButton Width="140" Height="50" FormType="Square" ButtonType="SimpleMode" Title="Click Me" 
+                                    Style="{StaticResource ACMButton.Style.Square.Normal}" Margin="10"/>
+
+                <acm_btns:ACMButton Width="170" Height="50" FormType="Square" ButtonType="SimpleMode" Title="SimpleMode : Click Me"  IconGeometry="{x:Null}"
+                                    Style="{StaticResource ACMButton.Style.Square.Normal}" Margin="10"/>
+
+                <acm_btns:ACMButton Width="170" Height="50" FormType="Square" ButtonType="ContentMode" Content="ContentMode : Click Me"  IconGeometry="{x:Null}"
+                                    Style="{StaticResource ACMButton.Style.Square.Normal}" Margin="10"/>
+            </WrapPanel>
+        </GroupBox>
+
+        <GroupBox Height="auto" Header="Processing">
+            <WrapPanel>
+                <acm_btns:ACMButton Radius="60" FormType="Circle" ButtonType="ProcessingMode" 
+                                    IsIndeterminate="True" Click="IndeternimateButton_Done_Click"
+                                    Style="{StaticResource ACMButton.Style.Circle.Process}" Margin="10"/>
+
+                <acm_btns:ACMButton Radius="60" FormType="Circle" ButtonType="ProcessingMode" 
+                                    IsIndeterminate="True" Click="IndeternimateButton_Error_Click"
+                                    Style="{StaticResource ACMButton.Style.Circle.Process}" Margin="10"/>
+
+                <acm_btns:ACMButton Width="120" Height="50" FormType="Square" ButtonType="ProcessingMode" Title="Click Me" Click="IndeternimateButton_Done_Click"
+                                    IsIndeterminate="True"
+                                    Style="{StaticResource ACMButton.Style.Square.Process}" Margin="10"/>
+            </WrapPanel>
+        </GroupBox>
+
+    </StackPanel>
+</UserControl>

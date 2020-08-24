@@ -1,0 +1,11 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <DropShadowEffect x:Key="Effect.DropShadow.GrayOuterGlow" Direction="0" ShadowDepth="0" Color="Gray"/>
+
+    <DropShadowEffect x:Key="Effect.DropShadow.GrayOuterGlow.3" Direction="0" ShadowDepth="0" Color="Gray" BlurRadius="3"/>
+    <DropShadowEffect x:Key="Effect.DropShadow.GrayOuterGlow.7" Direction="0" ShadowDepth="0" Color="Gray" BlurRadius="7"/>
+    <DropShadowEffect x:Key="Effect.DropShadow.GrayOuterGlow.10" Direction="0" ShadowDepth="0" Color="Gray" BlurRadius="10"/>
+    <DropShadowEffect x:Key="Effect.DropShadow.GrayOuterGlow.12" Direction="0" ShadowDepth="0" Color="Gray" BlurRadius="12"/>
+
+</ResourceDictionary>

@@ -1,0 +1,314 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:acm_ctrl="clr-namespace:ACM.Presentation.Controls.Buttons"
+                    xmlns:va="clr-namespace:ACM.Presentation.Views.AttachedProperties">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/CustomControl;component/Themes/Icons.xaml"/>
+        <ResourceDictionary Source="/CustomControl;component/Themes/Shared.xaml"/>
+        <ResourceDictionary Source="/CustomControl;component/Themes/Effects.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <PowerEase x:Key="powerEase"/>
+
+    <PathGeometry x:Key="geometryProcessing" Figures="M0 503.04a128 128 0 1 0 64-110.72 128 128 0 0 0-64 110.72z m109.44 273.28a109.44 109.44 0 1 0 109.44-109.44 109.44 109.44 0 0 0-109.44 109.44zM421.12 896a96 96 0 1 0 96-95.36A96 96 0 0 0 421.12 896z m310.4-101.76A91.52 91.52 0 1 0 823.04 704a91.52 91.52 0 0 0-91.52 90.24z m146.56-309.76a72.96 72.96 0 1 0 72.96-72.96 72.96 72.96 0 0 0-73.6 72.96zM768 211.84a55.04 55.04 0 1 0 55.04-54.4 54.4 54.4 0 0 0-55.04 54.4zM503.68 68.48a36.48 36.48 0 1 0 17.92-31.36 36.48 36.48 0 0 0-17.92 31.36z"/>
+    <PathGeometry x:Key="geometryCheck" Figures="M 18.843484 623.338077a69.158677 69.158677 0 0 1-6.483626-86.903338l8.986078-12.05727a55.963929 55.963929 0 0 1 79.737225-10.464799l283.800822 216.234613a76.211042 76.211042 0 0 0 89.860781-1.137478L1269.04582 70.751147a63.698782 63.698782 0 0 1 83.718399 2.957443l-3.639931-3.412435c22.067078 21.612087 21.612087 57.101408-1.137478 79.509729L472.128564 1007.236983a56.646416 56.646416 0 0 1-81.329695-1.02373L18.843484 623.338077z"/>
+
+    <ControlTemplate x:Key="ACMButtonTemplate.Default" TargetType="{x:Type acm_ctrl:ACMButton}">
+        <Grid>
+            <Border x:Name="borderEffect" CornerRadius="{Binding CornerRadius,ElementName=borderContainer}" Background="{TemplateBinding Background}" Effect="{x:Null}"/>
+            <Border x:Name="borderContainer" 
+                    CornerRadius="{TemplateBinding CornerRadius}"
+                    Background="{TemplateBinding Background}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    SnapsToDevicePixels="True"
+                    Cursor="Hand">
+                <Grid>
+                    <ContentPresenter x:Name="content"
+                                      Content="{TemplateBinding Content}"
+                                      Margin="{TemplateBinding Padding}"
+                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                </Grid>
+            </Border>
+        </Grid>
+        <ControlTemplate.Triggers>
+
+            <Trigger Property="FormType" Value="Circle">
+                <Setter TargetName="borderContainer" Property="CornerRadius" Value="{Binding ActualWidth, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type acm_ctrl:ACMButton}}}"/>
+            </Trigger>
+
+            <Trigger Property="IsMouseOver" Value="true">
+                <Setter TargetName="borderEffect" Property="Effect" Value="{StaticResource Effect.DropShadow.GrayOuterGlow.10}"/>
+            </Trigger>
+
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter Property="Opacity" Value=".5"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="ACMButtonTemplate.SimpleMode" TargetType="{x:Type acm_ctrl:ACMButton}">
+        <Grid>
+            <Border x:Name="borderEffect" CornerRadius="{Binding CornerRadius,ElementName=borderContainer}" Background="{TemplateBinding Background}" Effect="{x:Null}"/>
+            <Border x:Name="borderContainer" 
+                    CornerRadius="{TemplateBinding CornerRadius}"
+                    Background="{TemplateBinding Background}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    SnapsToDevicePixels="True"
+                    Cursor="Hand">
+                <Grid>
+                    <StackPanel x:Name="spl" 
+                                HorizontalAlignment="Center"
+                                Orientation="Horizontal" 
+                                Visibility="Visible">
+                        <!--icon-->
+                        <Path x:Name="pathIconDefault" Data="{TemplateBinding IconGeometry}" Stretch="Uniform" 
+                              Fill="{TemplateBinding Foreground}" 
+                              SnapsToDevicePixels="True"
+                              MaxWidth="{Binding ActualHeight,ElementName=spl}"
+                              Margin="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type acm_ctrl:ACMButton}}, Converter={StaticResource convMarginRatio},ConverterParameter='.01,.2'}"/>
+                        <!--text-->
+                        <TextBlock x:Name="txtTitle" Text="{TemplateBinding Title}" 
+                                   UseLayoutRounding="True" TextOptions.TextFormattingMode="Display"
+                                   VerticalAlignment="Center" Margin="7,0,0,0" SnapsToDevicePixels="True"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+        <ControlTemplate.Triggers>
+
+            <Trigger Property="FormType" Value="Circle">
+                <Setter TargetName="txtTitle" Property="Visibility" Value="Collapsed"/>
+                <Setter TargetName="borderContainer" Property="CornerRadius" Value="{Binding ActualWidth, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type acm_ctrl:ACMButton}}}"/>
+            </Trigger>
+
+            <Trigger Property="Title" Value="">
+                <Setter TargetName="txtTitle" Property="Visibility" Value="Collapsed"/>
+            </Trigger>
+            <Trigger Property="Title" Value="{x:Null}">
+                <Setter TargetName="txtTitle" Property="Visibility" Value="Collapsed"/>
+            </Trigger>
+
+            <Trigger Property="IsMouseOver" Value="true">
+                <Setter TargetName="borderEffect" Property="Effect" Value="{StaticResource Effect.DropShadow.GrayOuterGlow.10}"/>
+            </Trigger>
+
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter Property="Opacity" Value=".5"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="ACMButtonTemplate.Process" TargetType="{x:Type acm_ctrl:ACMButton}">
+        <Grid>
+            <Border x:Name="borderContainer" 
+                    CornerRadius="{TemplateBinding CornerRadius}"
+                    Background="{TemplateBinding Background}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    SnapsToDevicePixels="True"
+                    va:EffectAttachedProperties.BlurRadius="5"
+                    Cursor="Hand">
+                <Border.Effect>
+                    <DropShadowEffect x:Name="effectShadow" ShadowDepth="0" 
+                                      BlurRadius="{Binding Path=(va:EffectAttachedProperties.BlurRadius), RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type Border}}}" 
+                                      Color="Gray"/>
+                </Border.Effect>
+                <Grid>
+                    <Grid x:Name="progressIndicator" Panel.ZIndex="1">
+                        <Path x:Name="pathIndeteminate" Stretch="Uniform" 
+                              Fill="{TemplateBinding ProcessBrush}" 
+                              Data="{StaticResource geometryProcessing}" Visibility="Collapsed" RenderTransformOrigin=".5,.5" 
+                              Margin="{TemplateBinding ProgressMargin}">
+                            <Path.RenderTransform>
+                                <RotateTransform/>
+                            </Path.RenderTransform>
+                        </Path>
+                    </Grid>
+
+                    <StackPanel x:Name="spl" 
+                                HorizontalAlignment="Center"
+                                Orientation="Horizontal" 
+                                Visibility="Visible">
+                        <!--icon-->
+                        <Path x:Name="pathIconDefault" Data="{TemplateBinding IconGeometry}" Stretch="Uniform" 
+                              Fill="{TemplateBinding Foreground}" 
+                              SnapsToDevicePixels="True"
+                              MaxWidth="{Binding ActualHeight,ElementName=spl}"
+                              Margin="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type acm_ctrl:ACMButton}}, Converter={StaticResource convMarginRatio},ConverterParameter='.01,.2'}"/>
+                        <!--text-->
+                        <TextBlock x:Name="txtTitle" Text="{TemplateBinding Title}" 
+                                   UseLayoutRounding="True" TextOptions.TextFormattingMode="Display"
+                                   VerticalAlignment="Center" Margin="7,0,0,0" SnapsToDevicePixels="True"/>
+                    </StackPanel>
+
+                    <!--Content-->
+                    <ContentPresenter x:Name="content" Visibility="Collapsed"
+                                      Content="{TemplateBinding Content}"
+                                      Margin="{TemplateBinding Padding}"
+                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+
+                    <!--complete container-->
+                    <Border x:Name="borderCompleted" 
+                            Visibility="Collapsed"
+                            Background="{TemplateBinding Background}" 
+                            CornerRadius="{Binding CornerRadius,ElementName=borderContainer}" 
+                            Margin="1" RenderTransformOrigin=".5,.5">
+                        <!--completed icon-->
+                        <Path Data="{TemplateBinding ProcessCompletedIconGeometry}" Stretch="Uniform" 
+                              Fill="{TemplateBinding Foreground}" Margin="{Binding Margin,ElementName=pathIconDefault}"/>
+                        <Border.RenderTransform>
+                            <ScaleTransform ScaleX=".9" ScaleY=".9"/>
+                        </Border.RenderTransform>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <!--If Content Mode-->
+            <Trigger Property="ButtonType" Value="ContentMode">
+                <Setter TargetName="spl" Property="Visibility" Value="Collapsed"/>
+                <Setter TargetName="content" Property="Visibility" Value="Visible"/>
+            </Trigger>
+
+            <Trigger Property="FormType" Value="Circle">
+                <Setter TargetName="txtTitle" Property="Visibility" Value="Collapsed"/>
+                <Setter TargetName="borderContainer" Property="CornerRadius" Value="{Binding ActualWidth, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type acm_ctrl:ACMButton}}}"/>
+            </Trigger>
+
+            <Trigger Property="Title" Value="">
+                <Setter TargetName="txtTitle" Property="Visibility" Value="Collapsed"/>
+            </Trigger>
+            <Trigger Property="Title" Value="{x:Null}">
+                <Setter TargetName="txtTitle" Property="Visibility" Value="Collapsed"/>
+            </Trigger>
+
+            <Trigger Property="IsMouseOver" Value="true">
+                <Setter TargetName="borderContainer" Property="va:EffectAttachedProperties.BlurRadius" Value="10"/>
+            </Trigger>
+
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsProcessing" Value="true"/>
+                    <Condition Property="IsIndeterminate" Value="true"/>
+                </MultiTrigger.Conditions>
+                <Setter TargetName="pathIndeteminate" Property="Visibility" Value="Visible"/>
+                <Setter TargetName="spl" Property="Opacity" Value=".5"/>
+                <Setter Property="IsHitTestVisible" Value="False"/>
+                <MultiTrigger.EnterActions>
+                    <BeginStoryboard x:Name="BeginSB">
+                        <Storyboard >
+                            <DoubleAnimation Storyboard.TargetName="pathIndeteminate" Storyboard.TargetProperty="RenderTransform.Angle" From="0" To="360" RepeatBehavior="Forever" Duration="0:0:1"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </MultiTrigger.EnterActions>
+                <MultiTrigger.ExitActions>
+                    <RemoveStoryboard BeginStoryboardName="BeginSB"/>
+                </MultiTrigger.ExitActions>
+            </MultiTrigger>
+
+            <Trigger Property="IsProcessCompleted" Value="true">
+                <Setter TargetName="borderCompleted" Property="Visibility" Value="Visible"/>
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+
+                            <DoubleAnimation Storyboard.TargetName="pathIconDefault"
+                                             Storyboard.TargetProperty="Opacity"
+                                             EasingFunction="{StaticResource powerEase}"
+                                             To="0"
+                                             Duration="0:0:1"/>
+
+                            <DoubleAnimation Storyboard.TargetName="pathIconDefault"
+                                             Storyboard.TargetProperty="Opacity"
+                                             EasingFunction="{StaticResource powerEase}"
+                                             BeginTime="0:0:1.15"
+                                             Duration="0:0:1"/>
+
+                            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="borderCompleted" 
+                                                           Storyboard.TargetProperty="RenderTransform.ScaleX"  
+                                                           Duration="0:0:1.5">
+                                <LinearDoubleKeyFrame Value="0" KeyTime="0:0:0"/>
+                                <LinearDoubleKeyFrame Value=".8" KeyTime="0:0:0.35"/>
+                                <LinearDoubleKeyFrame Value=".8" KeyTime="0:0:1.15"/>
+                                <LinearDoubleKeyFrame Value="0" KeyTime="0:0:1.5"/>
+                            </DoubleAnimationUsingKeyFrames>
+
+                            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="borderCompleted" 
+                                                           Storyboard.TargetProperty="RenderTransform.ScaleY" 
+                                                           Duration="0:0:1.5">
+                                <LinearDoubleKeyFrame Value="0" KeyTime="0:0:0"/>
+                                <LinearDoubleKeyFrame Value=".8" KeyTime="0:0:0.35"/>
+                                <LinearDoubleKeyFrame Value=".8" KeyTime="0:0:1.15"/>
+                                <LinearDoubleKeyFrame Value="0" KeyTime="0:0:1.5"/>
+                            </DoubleAnimationUsingKeyFrames>
+
+                            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="borderCompleted" 
+                                                           Storyboard.TargetProperty="Opacity" 
+                                                           Duration="0:0:1.5">
+                                <LinearDoubleKeyFrame Value="0" KeyTime="0:0:0"/>
+                                <LinearDoubleKeyFrame Value=".8" KeyTime="0:0:0.35"/>
+                                <LinearDoubleKeyFrame Value=".8" KeyTime="0:0:1.15"/>
+                                <LinearDoubleKeyFrame Value="0" KeyTime="0:0:1.5"/>
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+            </Trigger>
+
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter Property="Opacity" Value=".5"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="ACMButton.Style.Base" TargetType="{x:Type acm_ctrl:ACMButton}">
+        <Setter Property="Background" Value="SkyBlue"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="ButtonType" Value="ContentMode"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="ProcessCompletedIconGeometry" Value="{StaticResource geometryCheck}"/>
+        <Setter Property="BorderBrush" Value="{Binding Background,RelativeSource={RelativeSource Mode=Self}}"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding ButtonType,RelativeSource={RelativeSource Mode=Self}}" Value="{x:Static acm_ctrl:ACMButtonType.ContentMode}">
+                <Setter Property="Template"  Value="{StaticResource ACMButtonTemplate.Default}"/>
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding ButtonType,RelativeSource={RelativeSource Mode=Self}}" Value="{x:Static acm_ctrl:ACMButtonType.SimpleMode}">
+                <Setter Property="Template"  Value="{StaticResource ACMButtonTemplate.SimpleMode}"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="ACMButton.Style.Square.Normal" TargetType="{x:Type acm_ctrl:ACMButton}" BasedOn="{StaticResource ACMButton.Style.Base}">
+        <Setter Property="FormType" Value="Square"/>
+        <Setter Property="IconGeometry" Value="{StaticResource geometryDefault}"/>
+        <Setter Property="CornerRadius" Value="6"/>
+      
+    </Style>
+
+    <Style x:Key="ACMButton.Style.Circle.Normal" TargetType="{x:Type acm_ctrl:ACMButton}" BasedOn="{StaticResource ACMButton.Style.Base}">
+        <Setter Property="FormType" Value="Circle"/>
+        <Setter Property="IconGeometry" Value="{StaticResource geometryDefault}"/>
+    </Style>
+
+    <Style x:Key="ACMButton.Style.Square.Process" TargetType="{x:Type acm_ctrl:ACMButton}" BasedOn="{StaticResource ACMButton.Style.Base}">
+        <Setter Property="FormType" Value="Square"/>
+        <Setter Property="IconGeometry" Value="{StaticResource geometryDefault}"/>
+        <Setter Property="CornerRadius" Value="6"/>
+        <Setter Property="Template" Value="{StaticResource ACMButtonTemplate.Process}"/>
+    </Style>
+
+    <Style x:Key="ACMButton.Style.Circle.Process" TargetType="{x:Type acm_ctrl:ACMButton}" BasedOn="{StaticResource ACMButton.Style.Base}">
+        <Setter Property="FormType" Value="Circle"/>
+        <Setter Property="IconGeometry" Value="{StaticResource geometryDefault}"/>
+        <Setter Property="Template" Value="{StaticResource ACMButtonTemplate.Process}"/>
+    </Style>
+
+</ResourceDictionary>
